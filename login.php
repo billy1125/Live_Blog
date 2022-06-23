@@ -1,18 +1,16 @@
 <?php
-header('Content-Type: application/json; charset=UTF-8');
+header("Content-Type: application/json; charset=UTF-8");
+session_start();  // 啟用Session
 
-$AccountCheckResult = array('Result' => false);
+$AccountCheckResult = array("Result" => false, "Admin" => false);
 
 if (isset($_COOKIE["LoginOK"]) && $_COOKIE["LoginOK"] == "OK") {
-    $AccountCheckResult['Result'] = true;
+    $AccountCheckResult["Result"] = true;
+    if (isset($_SESSION["admin"]) && $_SESSION["admin"] == "Y")
+        $AccountCheckResult["Admin"] = true;
 }
 if (isset($_POST["Account"]) && isset($_POST["Password"])) {
-
-    session_start();  // 啟用Session
-
     require("functions.php"); // require() 引用別的PHP檔案
-
-
 
     $Account = $_POST["Account"];                                       // 使用者帳號
     $Password = $_POST["Password"];                                     // 密碼
@@ -31,7 +29,9 @@ if (isset($_POST["Account"]) && isset($_POST["Password"])) {
 
         setcookie("LoginOK", "OK", $date); // 建立LoginOK的Cookie，用來辨識使用者是否已經成功驗證帳號密碼
 
-        $AccountCheckResult['Result'] = true;
+        $AccountCheckResult["Result"] = true;
+        if ($Result["admin"] == "Y")
+            $AccountCheckResult["Admin"] = true;
     }
 }
 
