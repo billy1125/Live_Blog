@@ -27,7 +27,7 @@
                     <a class="blog-header-logo text-dark" href="#">Live Blog!</a>
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
-                    <a class="btn btn-sm btn-outline-secondary" href='logout.php' id="logout_button">登出</a>
+                    <a class="btn btn-sm btn-outline-secondary" href="logout.php" id="logout_button">登出</a>
                 </div>
             </div>
         </header>
@@ -217,14 +217,14 @@
             dataType: "json",
             success: function (data) {
                 console.log(data)
-                if (data['Result'] == true) {
+                if (data["Result"] == true) {
                     $("#login_form").hide()
                     $("#logout_button").show()
                 } else {
                     $("#login_form").show()
                     $("#logout_button").hide()
                 }
-                if (data['Admin'] == false) {
+                if (data["Admin"] == false) {
                     $("#admin").hide()
                 }
             },
@@ -241,14 +241,29 @@
             success: function (data) {
                 for (let i = 0; i < data.length; i++) {
                     let j = 1
-                    const item = data[i]
-                    let div_post = "<div class='blog-post'><h2 class='blog-post-title'>" + item['title'] + "</h2><p class='blog-post-meta'> " + item['datetime'] + " <a href='' #''>" + item['name'] + "</a></p>" + item['post'] + "</div>"
+                    let title = data[i]['title']
+                    let name = data[i]['name']
+                    let post = data[i]['post']
+                    let datetime = data[i]['datetime']
+
+                    let div_post = `<div class="blog-post">
+                                        <h2 class="blog-post-title">${title}</h2>
+                                        <p class="blog-post-meta"> ${datetime} <a href="" #"">${name}</a></p>
+                                        ${post}</div>`
+
                     $("#posts").append(div_post)
 
-                    if (item['isPin'] == "1") {
-                        let div_post = "<div class='carousel-item'><div class='container'><div class='carousel-caption'><h1>" + item['title'] + "</h1><p>" + item['post'].substring(0, 75) + " ... </p><p><a href='#'>繼續閱讀</a></p></div></div></div>"
+                    if (data[i]["isPin"] == "1") {
+                        let div_post = `<div class="carousel-item">
+                                            <div class="container">
+                                                <div class="carousel-caption">
+                                                    <h1>${title}</h1><p>${post.substring(0, 75)} ... </p>
+                                                    <p><a href="#">繼續閱讀</a></p>
+                                                </div>
+                                            </div>
+                                        </div>`
                         $("#carousel_inner").append(div_post)
-                        let div_item = "<li data-target='#myCarousel' data-slide-to='" + j + "''></li>"
+                        let div_item = `<li data-target="#myCarousel" data-slide-to="${j}""></li>`
                         $("#carousel_indicators").append(div_item)
                         j += 1
                     }
@@ -269,12 +284,12 @@
                 data: datas,
                 dataType: "json",
                 success: function (data) {
-                    if (data['Result'] == true) {
+                    if (data["Result"] == true) {
                         $("#login_form").hide()
                         $("#logout_button").show()
                         alert("登入成功!")
                     }
-                    if (data['Admin'] == true) {
+                    if (data["Admin"] == true) {
                         $("#admin").show()
                     }
                 },
