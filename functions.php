@@ -283,7 +283,7 @@ function Query_All_Post_Titles()
         if ($pdo === false) {
             die("發生錯誤無法連線");
         } else {
-            $sql = "SELECT posts.*, users.name FROM posts, users WHERE posts.user_id = users.id";
+            $sql = "SELECT posts.*, users.name FROM posts, users WHERE posts.user_id = users.id ORDER BY posts.datetime DESC";
             $statement = $pdo->query($sql); 
 
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
